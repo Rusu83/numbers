@@ -1,0 +1,89 @@
+var url="https://rusu83.github.io/numbers/numbers.csv"
+var i,j,k;
+var x,y;
+var nmb;
+var allnmb=[];
+var maxime=[],valorimaxime=[];
+var minime=[],valoriminime=[];
+var cross=[];
+var nmbarr=[];
+
+function preload(){
+  nmb=loadTable(url,'csv','header');
+}
+
+function setup() {
+  createCanvas(800, 600);
+  noLoop();
+  
+  //print(nmb.rows[1].arr[0]);
+  
+  for(i=0;i<=50;i++)
+    allnmb[i]=0;
+  
+  for(i=0;i<nmb.rows.length;i++)
+    for(j=0;j<6;j++){
+      allnmb[nmb.rows[i].arr[j]]++;
+    }
+  
+  valorimaxime=[allnmb[1],allnmb[2],allnmb[3],allnmb[4],allnmb[5],allnmb[6]];
+  maxime=[1,2,3,4,5,6];
+  for(i=7;i<50;i++){
+    for(j=0;j<6;j++)
+      if(allnmb[i]>valorimaxime[j]){
+        valorimaxime[j]=allnmb[i];
+        maxime[j]=i;
+        j=7;
+      }
+  }
+  
+  valoriminime=[allnmb[1],allnmb[2],allnmb[3],allnmb[4],allnmb[5],allnmb[6]];
+  minime=[1,2,3,4,5,6];
+  for(i=7;i<50;i++){
+    for(j=0;j<6;j++)
+      if(allnmb[i]<valoriminime[j]){
+        valoriminime[j]=allnmb[i];
+        minime[j]=i;
+        j=7;
+      }
+  }
+  
+  for(i=0;i<nmb.rows.length;i++)
+    nmbarr[i]=[0,0,0,0,0,0];
+  for(i=0;i<nmb.rows.length;i++)
+    for(j=0;j<6;j++)
+      nmbarr[i][j]=nmb.rows[i].arr[j];
+  
+  
+  for(i=0;i<51;i++)
+    cross[i]=[];
+  
+  for(i=0;i<51;i++)
+    for(j=0;j<51;j++)
+      cross[i][j]=0;
+  
+  for(i=0;i<nmbarr.length;i++)
+    for(j=0;j<6;j++)
+      for(k=0;k<6;k++){
+        x=nmbarr[i][j];
+        y=nmbarr[i][k];
+        if(x!=''&&y!='')
+          cross[x][y]++;
+      }
+        
+  
+  print("Frecventa numere");
+  print(allnmb);
+  print("\nCele mai dese");
+  print(maxime);
+  print("\nCele mai rare");
+  print(minime);
+  print("\nCele mai");
+  print(cross);
+}
+
+function draw() {
+  background(0,40,40);
+  for(i=0;i<=50;i++)
+    rect(i*(width/51),height,width/51,-1*allnmb[i]);
+}
